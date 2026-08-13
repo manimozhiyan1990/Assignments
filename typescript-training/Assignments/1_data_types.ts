@@ -1,6 +1,7 @@
 
 let temperatureOfCity: number = 25.5;
 console.log(`Temperature of a city in degrees Celsius:${temperatureOfCity}`);
+console.log("Temperature of a city in degrees Celsius:"+temperatureOfCity)
 
 let customerPlaceOrder: boolean = true;
 console.log(`Whether a customer has placed an order: ${customerPlaceOrder}`);
