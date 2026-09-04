@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test1":"npx playwright test /tests/1-annotations/annotation2.spec.ts",
-    "smoke":"npx playwright test /tests/tags/tags.spec.ts --grep @smoke"
+    "test1":"npx playwright test tests/1-annotations/annotation2.spec.ts",
+    "tag":"npx playwright test tests/2-tags/tags.spec.ts --grep @smoke",
+    "tag2":"npx playwright test tests/2-tags/tags2.spec.ts --grep @regression",
+    "hooks":"npx playwright test --grep \"Hooks Test Suite\"",
+    "browser":"npx playwright test tests/4-browser-actions/browser-action.spec.ts",
+    "locator" :"npx playwright test tests/5-locators/locators.spec.ts --headed"
+
   },
   "keywords": [],
   "author": "",

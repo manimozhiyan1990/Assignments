@@ -1,44 +1,46 @@
-import {test , expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-test.describe("My first test suite" , async () => {
-test ("First test" , async ({page}) =>{
-    console.log ("My name is manimozhiyan");
-    await page.goto("https://www.google.com/");
-    await expect(page).toHaveTitle("Google");
-})
 
-test("Second test" , async ({page}) =>{
-    console.log ("My name is Jency Shelrin mary");
-    await page.goto("https://www.amazon.in/");
-    await expect(page).toHaveTitle("Online Shopping site in India: Shop Online for Mobiles, Books, Watches, Shoes and More - Amazon.in");
-})
 
-test("Third test" , async ({page}) =>{
-    console.log ("My name is Krisha shree");
-    await page.goto("https://www.flipkart.com/");
-    await expect(page).toHaveTitle("Online Shopping Site for Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More. Best Offers!");
+ test.describe('Hooks Test Suite', async () => {
+
+  test.describe.configure({ mode: 'serial' });
+
+   test.beforeAll('Before Test', async () => {
+    console.log('Before All - Setup once');
+  });
+
+
+test.beforeEach('Before Each Test', async () => {
+    console.log('Before Each Test - Setup before each test');
+  }); 
+
+  test.afterEach('After Each Test', async () => {
+    console.log('After Each Test - Cleanup after each test');
+  });
+  
+test('Test 1', async ({ page }) => {
+  console.log('Running Test 1');
 });
 
+test('Test 2', async ({ page }) => {
+  console.log('Running Test 2');
 });
 
-test.describe("My second test suite" , async () => {
-test("Fourth test" , async ({page}) =>{
-    console.log ("My name is Anbu");
-    await page.goto("https://www.snapdeal.com/");
-    await expect(page).toHaveTitle("Online shopping for Men, Women & Kids Fashion, Home Decor, lifestyle & More");
-})
-
-test("Fifth test" , async ({page}) =>{
-    console.log ("My name is Bharath");
-    await page.goto("https://www.firstcry.com/");
-    await expect(page).toHaveTitle("Baby Products Online India: Newborn Baby Products & Kids Online Shopping at FirstCry.com");    
-
+test('Test 3', async ({ page }) => {
+  console.log('Running Test 3');
 });
 
-test("Sixth test" , async ({page}) =>{
-    console.log ("My name is Sakthi");
-    await page.goto("https://www.tatacliq.com/");
-    await expect(page).toHaveTitle("Online Fashion & Lifestyle Shopping for Women, Men & Kids in India - Tata CLiQ");
+test('Test 4', async ({ page }) => {
+  console.log('Running Test 4');
 });
 
-});
+test('Test 5', async ({ page }) => {
+  console.log('Running Test 5');
+}); 
+
+test.afterAll('After Test', async () => {
+    console.log('After All - Cleanup once');
+  })
+
+ });
