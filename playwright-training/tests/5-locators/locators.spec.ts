@@ -12,5 +12,7 @@ test('locators',async({page})=>{
     await page.waitForTimeout(3000); 
      
     await page.getByRole("link" ,{name:"Register"}).click();
+
+    
     
 })

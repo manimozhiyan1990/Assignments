@@ -9,7 +9,8 @@
     "tag2":"npx playwright test tests/2-tags/tags2.spec.ts --grep @regression",
     "hooks":"npx playwright test --grep \"Hooks Test Suite\"",
     "browser":"npx playwright test tests/4-browser-actions/browser-action.spec.ts",
-    "locator" :"npx playwright test tests/5-locators/locators.spec.ts --headed"
+    "locator" :"npx playwright test tests/5-locators/getByRole.spec.ts",
+    "parabank" : "npx playwright test tests/0-assignments/parabank/parabank.spec.ts"
 
   },
   "keywords": [],
