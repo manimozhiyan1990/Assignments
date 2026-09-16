@@ -1,0 +1,19 @@
+{
+  "web": {
+    "url": "http://localhost:3000",
+    "title": "My Web App"
+  },
+  "api": {
+    "url": "http://localhost:4000"
+  },
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "my_database",
+    "user": "my_user",
+    "password": "my_password"
+  },
+  "ai": {
+    "url": "http://localhost:5000"
+  }
+}
