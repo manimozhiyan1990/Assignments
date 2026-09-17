@@ -27,3 +27,17 @@
 
 3. testdata => To maintain test data related to each and every component, like UI, API, database, AI, and performance testing
 
+4. utilities => To maintain the common methods related to different types of utilities we are going to use in our framework based on our application needs (for example, Excel utility, PDF utility, etc.)
+
+5. page-objects => We will maintain page-wise locators (page-objects\page-elements) and page-wise common methods (page-objects\page-steps) separately to implement the page object model design pattern within the framework.
+
+6. tests => To maintain all the test cases related to each and every component, like UI, API, database, performance testing, AI, etc.
+
+7. .env => To maintain the environment-specific data, credentials, and secrets that we need to maintain locally
+
+8. test-results => To maintain all the test result reports along with videos, traces, etc., related to test execution
+
+9. test-results/screenshots => Maintain all the screenshots related to your test execution.
+
+10. files => To maintain the flat files like Excel, PDF, images, etc.
+
