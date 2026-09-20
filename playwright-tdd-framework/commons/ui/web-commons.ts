@@ -1,133 +1,153 @@
-import { Page, Locator, expect } from "@playwright/test";
-import config from "../../config/config.json"with {type: 'json'}
-import { characterCodeToRegularExpressionFlag } from "typescript/unstable/ast";
+import { Page, Locator, expect } from '@playwright/test';
+import config from '../../config/config.json' with {type :'json'};
 
 export class WebCommons {
+    constructor(private page: Page) { }
 
-    page: Page;
-
-    constructor(page: Page) {
-
-        this.page = page;
-    }
-
-    // Reuasble method for launch the appication
-    async launchTheApplication() {
-
+    // ===================== LAUNCH =====================
+    async launchApplication(): Promise<void> {
         await this.page.goto(config.web.url);
-        await expect(this.page).toHaveTitle(config.web.title)
-
+        await this.waitForPageLoad();
+        await this.page.setViewportSize({ width: 1920, height: 1080 }); 
+        await expect(this.page).toHaveTitle(config.web.title);
     }
-    // Generate a web Element from the Locators
-    async element(locator: string): Promise<Locator> {
+
+    async launchInNewTab(url: string): Promise<Page> {
+        const newPage = await this.page.context().newPage();
+        await newPage.goto(url);
+        return newPage;
+    }
+
+    // ===================== LOCATOR =====================
+    element(locator: string): Locator {
         return this.page.locator(locator);
     }
 
-    // Scroll to the Element 
-
-    async scrollToElement(locator: string): Promise<void> {
-        const element = await this.element(locator);
-        await element.scrollIntoViewIfNeeded();
+    // ===================== ACTIONS =====================
+    async click(locator: string): Promise<void> {
+        const el = this.element(locator);
+        await el.click();
     }
-    // ==========================================ClicK action===================================================================================
-    //  click on the Web Element
 
-    async clickElement(locator: string): Promise<void> {
-        const element = await this.element(locator);
-        await element.click();
-    }
-    //  Double click
     async doubleClick(locator: string): Promise<void> {
-        const element = await this.element(locator)
-        await element.dblclick();
+        const el = this.element(locator);
+        await el.dblclick();
     }
-    //    Right Click
 
     async rightClick(locator: string): Promise<void> {
-        const element = await this.element(locator);
-        await element.click({ button: 'right' });
+        const el = this.element(locator);
+        await el.click({ button: 'right' });
     }
 
-    async mouseHover(locator: string): Promise<void> {
-        const element = await this.element(locator);
-        await element.hover();
+    async hover(locator: string): Promise<void> {
+        const el = this.element(locator);
+        await el.hover();
     }
-    //  =================================================================================================================================
 
-    // type text on text Element 
+    async type(locator: string, text: string): Promise<void> {
+        const el = this.element(locator);
+        await el.fill(text);
+    }
 
     async enterText(locator: string, text: string): Promise<void> {
-        const element = await this.element(locator);
-        await element.clear();
-        await element.fill(text)
+        const el = this.element(locator);
+        await el.clear();
+        await el.fill(text);
     }
 
-    //  Method for Drop Down
-    async selectDropdownOption(locator: string, optionValue: string): Promise<void> {
-        const element = await this.element(locator);
-        await element.selectOption(optionValue);
+    async scrollTo(locator: string): Promise<void> {
+        const el = this.element(locator);
+        await el.scrollIntoViewIfNeeded();
+    }
+    // ===================== VALIDATIONS =====================
+
+    // visibility--Boolean Condition
+    async isElementDisplayed(locator: string): Promise<boolean> {
+        const el = this.element(locator);
+        return await el.isVisible();
+    }
+    //   Disappeared
+    async isElementNotDisplayed(locator: string): Promise<boolean> {
+        const el = this.element(locator);
+        return await el.isHidden();
+    }
+    // enabled / disabled
+    async isEnabled(locator: string): Promise<boolean> {
+        const el = this.element(locator);
+        return await el.isEnabled();
     }
 
-    //  Get the text value from the web Element
-
-    async getText(locator: string): Promise<string | null> {
-        const element = await this.element(locator);
-        return await element.textContent();
+    // checked (for checkbox / radio)
+    async isChecked(locator: string): Promise<boolean> {
+        const el = this.element(locator);
+        return await el.isChecked();
     }
 
-    // Get Attribute vaule
-    async getAttribute(locator: string, attributeValue: string): Promise<string | null> {
-        const element = await this.element(locator);
-        return await element.getAttribute(attributeValue);
-    }
-    //  select the option from the checkbox
-    async selectCheckbox(locator: string, status: boolean): Promise<void> {
-        const element = await this.element(locator);
-        const isChecked = await element.isChecked();
 
-        if (isChecked !== status) {
-            await element.check();
+    // ===================== DROPDOWN =====================
+    async selectByValue(locator: string, value: string): Promise<void> {
+        const el = this.element(locator);
+        await el.selectOption(value);
+    }
+
+    // ===================== CHECKBOX =====================
+    async setCheckbox(locator: string, status: boolean): Promise<void> {
+        const el = this.element(locator);
+        if (status) {
+            await el.check();
+        } else {
+            await el.uncheck();
         }
     }
 
-    //  to verify whether an element is displayed
-    async isElementDisplayed(locator: string): Promise<boolean> {
-        const element = await this.element(locator);
-        return await element.isVisible();
+    // ===================== GET TEXT VALUE =====================
+    async getText(locator: string): Promise<string | null> {
+        const el = this.element(locator);
+        return await el.textContent();
     }
 
-    // to verify whether an element is enabled
-    async isElementEnabled(locator: string): Promise<boolean> {
-        const element = await this.element(locator);
-        return await element.isEnabled();
+    async getAttribute(locator: string, attr: string): Promise<string | null> {
+        const el = this.element(locator);
+        return await el.getAttribute(attr);
+    }
+    // value (for input fields)
+    async getValue(locator: string): Promise<string> {
+        const el = this.element(locator);
+        return await el.inputValue();
+    }
+    async verifyContainsTextTitle(locator: string, expectedText: string): Promise<void> {
+    const el = this.element(locator);
+    await expect(el).toContainText(expectedText);
+}
+//  compare actual value with expected value
+async compareValue(actualValue: string | null, expectedValue: string): Promise<void> {
+    if (actualValue === null) {
+        throw new Error('Actual value is null');
     }
 
-    // to upload the file
+    expect(actualValue).toBe(expectedValue);
+}
+async compareContainsText(locator: string, expectedText: string): Promise<void> {
+    const el = this.element(locator);
+
+    await el.waitFor({ state: 'visible' });   
+    await expect(el).toContainText(expectedText);
+}
+    // ===================== FILE =====================
     async uploadFile(locator: string, filePath: string): Promise<void> {
-        const element = await this.element(locator);
-        await element.setInputFiles(filePath);
+        const el = this.element(locator);
+        await el.setInputFiles(filePath);
     }
 
-    // Screen shot Method 
-    async takeScreenshot(filePath: string): Promise<void> {
-        await this.page.screenshot({ path: filePath });
-    }
-    //   Screen shot for full page
-    async takeFullPageScreenshot(filePath: string, fullPage: boolean): Promise<void> {
-
-        await this.page.screenshot({ path: filePath, fullPage: true });
+    // ===================== SCREENSHOT =====================
+    async screenshot(path: string, fullPage: boolean = false): Promise<void> {
+        await this.page.screenshot({ path, fullPage });
     }
 
-    //   launch the application in new tab
-    async launchInNewTab(url: string): Promise<void> {
-        const newPage = await this.page.context().newPage();
-        await newPage.goto(url);
-    }
-
-    // handle alert popups
-    async handleAlert(action: string | 'dismiss', promptText?: string): Promise<void> {
-        this.page.on('dialog', async (dialog) => {
-            if (action.toLowerCase() === 'accept') {
+    // ===================== ALERT =====================
+    async handleAlert(action: 'accept' | 'dismiss', promptText?: string): Promise<void> {
+        this.page.once('dialog', async (dialog) => {
+            if (action === 'accept') {
                 await dialog.accept(promptText);
             } else {
                 await dialog.dismiss();
@@ -135,4 +155,40 @@ export class WebCommons {
         });
     }
 
+    // ===================== ASSERTIONS =====================
+
+async verifyTitle(expectedTitle: string): Promise<void> {
+    await expect(this.page).toHaveTitle(expectedTitle);
+}
+
+async verifyText(locator: string, expectedText: string): Promise<void> {
+    const el = this.element(locator);
+    await expect(el).toHaveText(expectedText);
+}
+
+async verifyVisible(locator: string): Promise<void> {
+    const el = this.element(locator);
+    await expect(el).toBeVisible();
+}
+
+async verifyEnabled(locator: string): Promise<void> {
+    const el = this.element(locator);
+    await expect(el).toBeEnabled();
+}
+
+
+// ====================wait=====================
+async waitForElement(locator: string, timeout: number = 5000): Promise<void> {
+    const el = this.element(locator);
+    await el.waitFor({ state: 'visible', timeout });
+}   
+
+async waitForPageLoad(): Promise<void> {
+    await this.page.waitForLoadState('domcontentloaded');
+}
+async waitForClickable(locator: string): Promise<void> {
+    const el = this.page.locator(locator);
+    await el.waitFor({ state: 'visible' });
+    await el.waitFor({ state: 'attached' });
+}
 }
