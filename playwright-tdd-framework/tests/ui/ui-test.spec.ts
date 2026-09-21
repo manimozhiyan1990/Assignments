@@ -104,7 +104,7 @@ test.describe('Creatio Crm Web Application Automation', () => {
 
     })
     // test 10 -- Verify Valid Login with valid credentials.
-    test('Verify Valid Login with valid credentials', async ({ page }) => {
+    test.only('Verify Valid Login with valid credentials', async ({ page }) => {
         const testData = data['Verify Valid Login with valid credentials'];
         await loginPage.launchApplication();
         await cookiesPage.verifyCookiesPopUpDisplayed();
@@ -123,5 +123,6 @@ test.describe('Creatio Crm Web Application Automation', () => {
          await loginPage.enterLoginPassword(testData.password);
          await loginPage.clickOnContinueButton();
          await homePage.verifyHomePageIsDisplayed();
+         await page.pause();
     })
 })
