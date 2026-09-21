@@ -123,6 +123,6 @@ test.describe('Creatio Crm Web Application Automation', () => {
          await loginPage.enterLoginPassword(testData.password);
          await loginPage.clickOnContinueButton();
          await homePage.verifyHomePageIsDisplayed();
-         
+         console.log("Test Ends")
     })
 })
